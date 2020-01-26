@@ -17,6 +17,8 @@ class Momentum:
 
     def __init__(self, lr=0.01, momentum=0.9):
         self.lr = lr
+
+        # 模擬摩擦力的效應
         self.momentum = momentum
         self.v = None
 
@@ -43,8 +45,11 @@ class AdaGrad:
                 self.h[key] = np.zeros_like(val)
 
         for key in params.keys():
+            # self.h 記錄了歷史梯度資訊
             self.h[key] += grads[key] * grads[key]
-            params[key] -= self.lr * grads[key] / (np.sqrt(self.h[key]) + 1e-7)
+
+            # self.h 會越累積越多，達到降低學習率的效果
+            params[key] -= self.lr * grads[key] / (np.sqrt(self.h[key]) + 1e-8)
 
 
 class Adam:
